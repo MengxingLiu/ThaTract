@@ -26,7 +26,7 @@ def checkResults(ct,analysis, pj):
         baseDir = '/scratch/lmx/MAGNO/Nifti/derivatives'
         codeDir = '/dipc/lmx/GIT/paper-MAGNO'
     elif pj == 'ThaTract':
-        baseDir = '/scratch/lmx/ThaTract/Nifti/derivatives'
+        baseDir = '/dipc/lmx/ThaTract/Nifti/derivatives'
         codeDir = '/dipc/lmx/GIT/ThaTract'
  
     subseslist=os.path.join(codeDir,"subSesList.txt")
@@ -40,19 +40,16 @@ def checkResults(ct,analysis, pj):
         func = row.func
         if dwi:
             targetFull = (f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/' + 
-                          f'ses-{ses}/output/{target}')
+                          f'ses-{ses}')
             #print(targetFull)
             if os.path.exists(targetFull):
                 #print(f'it seems like the results are there')
                 #print(f'at least {target} is there for {sub}\n' + 
                 #      f'running {ct} of analysis-{analysis}, ses-{ses}')
                 #print("###########################################")
-                print("OOOOK!!")
+                print(f"{targetFull}")
+                os.rename(targetFull, f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/ses-T01')
                 continue
-            else:
-                print(f"{sub} didn't finish well for \n" +
-                      f"{ct} of analysis-{analysis}, ses-{ses} \n" + 
-                      f"#######################################")
 if __name__ == "__main__":
     args = parser.parse_args()
     checkResults(args.ct, args.analysis, args.pj)

@@ -49,9 +49,9 @@ printf "\n\n It will use basedir:$basedir and tool:$tool \n\n"
    		printf "#########################################\n"
    		qsub \
             -q $que -l mem=$mem,nodes=1:ppn=$core \
-            -N t-${tool}_a-${analysis}_s-${sub}_s-${ses} \
-            -o "$HOME"/logs/t-${tool}_a-${analysis}_s-${sub}_s-${ses}.o \
-            -e "$HOME"/logs/t-${tool}_a-${analysis}_s-${sub}_s-${ses}.e \
+            -N s-${sub}_s-${ses}_t-${tool}_a-${analysis} \
+            -o "$HOME"/logs/s-${sub}_s-${ses}_t-${tool}_a-${analysis}.o \
+            -e "$HOME"/logs/s-${sub}_s-${ses}_t-${tool}_a-${analysis}.e \
             -v tool=${tool},path2subderivatives=${path2subderivatives},path2config=${path2config},sin_ver=${sin_ver},container=${container},tmpdir=${tmpdir} ${codedir}/runSingularity.sh 
 	fi
 

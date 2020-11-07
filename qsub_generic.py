@@ -8,21 +8,11 @@ import nibabel as nib
 import pandas as pd
 
 
-# Hardcoded variables
-# singularityVersion > runSingularity.sh
-
-
-
-
-
-
-
-
 
 #tool   ="fs_7.1.1-03"
-tool   ="rtppreproc_1.1.2"
-# tool   ="rtp-pipeline_4.3.4"
-analysis="01" 
+#tool   ="rtppreproc_1.1.2"
+tool   ="rtp-pipeline_4.3.5d"
+analysis="06" 
 
 # PREVIOUS ANALYSIS
 # pretoolfs="fs_7.1.1-03"
@@ -35,12 +25,11 @@ analysis="01"
 pj = "ThaTract" # possible values: MAGNO, ThaTract
 host ='dipc' # possible values: dipc, bcbl
 
-# find the correct code dir
-if pj == "MAGNO":
-    gitdir = "paper-MAGNO"
-elif pj == "ThaTract":
-    gitdir = "ThaTract"
 
+gitdir = "ThaTract"
+
+
+# find the correct code dir
 
 if host == "dipc":
     

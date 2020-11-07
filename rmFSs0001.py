@@ -14,11 +14,11 @@ parser.add_argument('-p', '--pj', type=str, default =  'ThaTract',
 
 def checkResults(ct,analysis, pj):
     if 'fs' in ct:
-        target = 'fs.zip'
+        target = 's0001'
     elif 'preproc' in ct:
-        target = 'dwi.nii.gz'
+        target = ''
     elif 'pipeline' in ct:
-        target = 'Reproduce.mat'
+        target = ''
     else:
         raise Exception("Hey, which container's results you want to check?")
 
@@ -41,18 +41,14 @@ def checkResults(ct,analysis, pj):
         if dwi:
             targetFull = (f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/' + 
                           f'ses-{ses}/output/{target}')
-            #print(targetFull)
+            print(targetFull)
             if os.path.exists(targetFull):
-                #print(f'it seems like the results are there')
-                #print(f'at least {target} is there for {sub}\n' + 
-                #      f'running {ct} of analysis-{analysis}, ses-{ses}')
-                #print("###########################################")
+                shutil.rmtree(targetFull, ignore_errors=False)
                 print("OOOOK!!")
                 continue
             else:
-                print(f"{sub} didn't finish well for \n" +
-                      f"{ct} of analysis-{analysis}, ses-{ses} \n" + 
-                      f"#######################################")
+                print(f"it seems {sub} didn't finish well for \n" +
+                      f"{ct} of analysis-{analysis}, ses-{ses}")
 if __name__ == "__main__":
     args = parser.parse_args()
     checkResults(args.ct, args.analysis, args.pj)

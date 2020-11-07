@@ -8,13 +8,12 @@ import numpy as np
 import nibabel as nib
 import pandas as pd
 
-# basedir="/bcbl/home/public/Gari/MAGNO2/"
 basedir="/scratch/lmx/ThaTract/"
 # THIS ANALYSIS
 #tool   ="fs_7.1.1-03"
-tool   ="rtppreproc_1.1.2"
-# tool   ="rtp-pipeline_4.3.4"
-analysis="01" 
+#tool   ="rtppreproc_1.1.2"
+tool   ="rtp-pipeline_4.3.5d"
+analysis="06" 
 
 # PREVIOUS ANALYSIS
 pretoolfs="fs_7.1.1-03"
@@ -38,8 +37,8 @@ for index in dt.index:
     dwi  = dt.loc[index, 'dwi']
     func = dt.loc[index, 'func']
     if 'fs' in tool and RUN:
-        # not create symbolic for Time 02
         if ses == "T02":
+            # if it's Time 02, don't run fs
             continue
         # Main source dir
         src_anatomical = os.path.join(basedir, 'Nifti','sub-'+sub, 'ses-'+ses, 'anat','sub-'+sub+'_ses-'+ses+'_T1w.nii.gz')
@@ -104,8 +103,10 @@ for index in dt.index:
                                 'analysis-'+analysis, 'sub-'+sub, 'ses-'+ses, 'input')
         dstDirOp = os.path.join(basedir, 'Nifti', 'derivatives', tool, 
                                 'analysis-'+analysis, 'sub-'+sub, 'ses-'+ses, 'output')
-        sh.rmtree(dstDir)
+        
         # Create folders if they do not exist
+        if os.path.exists(dstDir):
+            sh.rmtree(dstDir)
         if not os.path.exists(dstDir): os.makedirs(dstDir)
         if not os.path.exists(dstDirOp): os.makedirs(dstDirOp)
     
@@ -139,9 +140,8 @@ for index in dt.index:
     
     if 'rtp-pipeline' in tool and RUN and dwi:
         # Main source dir
-        # use fs Time 01 for Time02 data
         srcDirfs = os.path.join(basedir, 'Nifti', 'derivatives', pretoolfs, 
-                                'analysis-'+preanalysisfs,'sub-'+sub, 'ses-'+ "T01", 'output')
+                                'analysis-'+preanalysisfs,'sub-'+sub, 'ses-'+"T01", 'output')
         srcDirpp = os.path.join(basedir, 'Nifti', 'derivatives', pretoolpp, 
                                 'analysis-'+preanalysispp, 'sub-'+sub, 'ses-'+ses, 'output')
     
@@ -157,7 +157,6 @@ for index in dt.index:
                                 'analysis-'+analysis, 'sub-'+sub, 'ses-'+ses, 'input')
         dstDirOp = os.path.join(basedir, 'Nifti', 'derivatives', tool, 
                                 'analysis-'+analysis, 'sub-'+sub, 'ses-'+ses, 'output')
-        sh.rmtree(dstDirIn)
         # Create folders if they do not exist
         if not os.path.exists(dstDirIn): os.makedirs(dstDirIn)
         if not os.path.exists(dstDirOp): os.makedirs(dstDirOp)
