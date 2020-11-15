@@ -37,10 +37,10 @@ Right-MGN,.nii.gz,R_A1_Belt,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,
 Right-MGN,.nii.gz,R_A1_Belt,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,1,0,0,0,0,0,KN36,36,L,LKN36,L,KN,0,0,200,20,45,iFoD2,5000,0.05,4,4,100,median,3
 Right-MGN,.nii.gz,R_Primary_Auditory_Cortex,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,1,0,0,0,0,0,KN37,37,L,LKN37,L,KN,0,0,200,20,45,iFoD2,5000,0.05,3,3,100,median,3
 Right-MGN,.nii.gz,R_Primary_Auditory_Cortex,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,1,0,0,0,0,0,KN38,38,L,LKN38,L,KN,0,0,200,20,45,iFoD2,5000,0.05,4,4,100,median,3
-Left-VLp,.nii.gz,Right-Dentate,.nii.gz,NO,.nii.gz,Right-Brain-Stem,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,2,0,0,0,0,0,KN39,39,L,LKN39,L,KN,0,0,200,20,60,iFoD2,5000,0.05,3,3,100,median,3
-Left-VLp,.nii.gz,Right-Dentate,.nii.gz,NO,.nii.gz,Right-Brain-Stem,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,2,0,0,0,0,0,KN40,40,L,LKN40,L,KN,0,0,200,20,60,iFoD2,5000,0.05,4,4,100,median,3
-Right-VLp,.nii.gz,Left-Dentate,.nii.gz,NO,.nii.gz,Left-Brain-Stem,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,2,0,0,0,0,0,KN41,41,L,LKN41,L,KN,0,0,200,20,60,iFoD2,5000,0.05,3,3,100,median,3
-Right-VLp,.nii.gz,Left-Dentate,.nii.gz,NO,.nii.gz,Left-Brain-Stem,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,2,0,0,0,0,0,KN42,42,L,LKN42,L,KN,0,0,200,20,60,iFoD2,5000,0.05,4,4,100,median,3
+Left-VLp,.nii.gz,Right-Dentate,.nii.gz,NO,.nii.gz,NO,.nii.gz,Right-Brain-Stem,.nii.gz,NO,.nii.gz,1,2,0,0,0,0,0,KN39,39,L,LKN39,L,KN,0,0,200,20,60,iFoD2,5000,0.05,3,3,100,median,3
+Left-VLp,.nii.gz,Right-Dentate,.nii.gz,NO,.nii.gz,NO,.nii.gz,Right-Brain-Stem,.nii.gz,NO,.nii.gz,1,2,0,0,0,0,0,KN40,40,L,LKN40,L,KN,0,0,200,20,60,iFoD2,5000,0.05,4,4,100,median,3
+Right-VLp,.nii.gz,Left-Dentate,.nii.gz,NO,.nii.gz,NO,.nii.gz,Left-Brain-Stem,.nii.gz,NO,.nii.gz,1,2,0,0,0,0,0,KN41,41,L,LKN41,L,KN,0,0,200,20,60,iFoD2,5000,0.05,3,3,100,median,3
+Right-VLp,.nii.gz,Left-Dentate,.nii.gz,NO,.nii.gz,NO,.nii.gz,Left-Brain-Stem,.nii.gz,NO,.nii.gz,1,2,0,0,0,0,0,KN42,42,L,LKN42,L,KN,0,0,200,20,60,iFoD2,5000,0.05,4,4,100,median,3
 Left-VLa_AND_Left-VLp,.nii.gz,L_Primary_Motor_Cortex,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,1,0,0,0,0,0,KN43,43,L,LKN43,L,KN,0,0,200,20,45,iFoD2,5000,0.05,4,4,100,median,3
 Right-VLa_AND_Right-VLp,.nii.gz,R_Primary_Motor_Cortex,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,1,0,0,0,0,0,KN44,44,L,LKN44,L,KN,0,0,200,20,45,iFoD2,5000,0.05,4,4,100,median,3
 Left-VLa_AND_Left-VLp,.nii.gz,L_dlPremotor,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,NO,.nii.gz,1,1,0,0,0,0,0,KN45,45,L,LKN45,L,KN,0,0,200,20,45,iFoD2,5000,0.05,4,4,100,median,3
