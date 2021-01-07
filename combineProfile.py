@@ -39,15 +39,14 @@ def concateProfile(ct,analysis, target):
             else:
                 continue
     appended_data = pd.concat(appended_data)
+    #appended_data.to_csv(f'{baseDir}/{ct}/analysis-{analysis}/RTP_{target}_all.csv',index=False)
     return appended_data
-    # appended_data.to_csv(f'{baseDir}/{ct}/analysis-{analysis}/RTP_{target}_all.csv',index=False)
 
 def mergeProfile(ct,analysis):
     baseDir = '/scratch/lmx/ThaTract/Nifti/derivatives'
     codeDir = '/dipc/lmx/GIT/ThaTract'
 
-    targets = ["ad", "cl", "C2ROIcurvature", "C2ROIrd", "cl", "md", "volume", "C2ROIad", "C2ROIfa", "C2ROItorsion",
-            "curvature", "rd", "C2ROIcl",  "C2ROImd", "C2ROIvolume", "fa", "torsion"]
+    targets = ["ad", "cl", "md", "volume", "curvature", "rd", "fa", "torsion"]
     for target in targets:
         print(target)
         tmp = concateProfile(ct,analysis, target)
@@ -56,8 +55,22 @@ def mergeProfile(ct,analysis):
             Allprofile =  tmp
         else:
             Allprofile = pd.merge(Allprofile, tmp, how='inner')
-    Allprofile.to_csv(f'{baseDir}/{ct}/analysis-{analysis}/RTP_Profile_all.csv',index=False)
-
+    Allprofile["analysis"] = analysis
+    Allprofile.to_csv(f'{baseDir}/{ct}/analysis-{analysis}/RTP_Profile.csv',index=False)
+    targets = ["C2ROIcurvature", "C2ROIrd","C2ROIad", "C2ROIfa", "C2ROItorsion",
+            "C2ROIcl",  "C2ROImd", "C2ROIvolume",]
+    for target in targets:
+        print(target)
+        tmp = concateProfile(ct,analysis, target)
+        tmp = tmp.rename(columns = {"value":target})
+        print(tmp.TCK.unique())
+        if targets.index(target) == 0:
+            Allprofile =  tmp
+        else:
+            Allprofile = pd.merge(Allprofile, tmp, how='inner')
+    Allprofile["analysis"] = analysis
+    Allprofile.to_csv(f'{baseDir}/{ct}/analysis-{analysis}/RTP_Profile_C2ROI.csv',index=False)
+ 
 if __name__ == "__main__":
     args = parser.parse_args()
     mergeProfile(args.ct, args.analysis)

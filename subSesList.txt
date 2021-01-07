@@ -131,7 +131,7 @@ TOT8087M,T01,True,True,True,False,TOT8087M
 TOT5161F,T01,True,True,True,False,TOT5161F
 TOT4391F,T01,True,True,True,False,TOT4391F
 28CAMINO6650,T01,True,True,True,False,28CAMINO6650
-TOT7729F,T01,True,True,True,False,TOT7729F
+TOT7729F,T01,True,True,True,True,TOT7729F
 TOT2154,T01,True,True,True,False,TOT2154
 01Caminoreso5503,T01,True,True,True,False,01Caminoreso5503
 TOT8360,T01,True,True,True,False,TOT8360
