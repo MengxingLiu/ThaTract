@@ -1,0 +1,9 @@
+sub,ses,RUN,anat,dwi,func,origName
+BBADV05,T02,False,True,True,True,S038
+BBADV05,T01,True,True,True,True,S038
+BBINT05,T02,False,True,True,True,S037
+BBINT05,T01,True,True,True,True,S037
+TEENCONT05,T02,False,True,True,True,S036
+TEENCONT05,T01,True,True,True,True,S036
+TEENEXPT05,T02,False,True,True,True,S035
+TEENEXPT05,T01,True,True,True,True,S035
