@@ -36,7 +36,7 @@ def checkResults(ct, a, b, pj):
     slabel = thalist.slabel
     if "time" in a and "time" in b:
         Ases = a[-2:]; Bses = b[-2:]
-        analysis = '01-B'
+        analysis = '01'
         for sub, tract in itertools.product(dt["sub"], slabel):
             T01 =  (f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/' +
                     f'ses-T{Ases}/output/{tract}_clean.tck')
