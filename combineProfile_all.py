@@ -7,8 +7,8 @@ import wide2long
 
 appended_RTP = []
 appended_C2ROI = []
-baseDir = '/scratch/lmx/ThaTract/Nifti/derivatives'
-codeDir = '/dipc/lmx/GIT/ThaTract'
+baseDir = '/scratch/lmx/THALOC/Nifti/derivatives'
+codeDir = '/dipc/lmx/GIT/'
 ct = "rtp-pipeline_4.3.5d"
 
 for analysis in range(1,11):

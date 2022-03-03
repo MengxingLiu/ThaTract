@@ -18,7 +18,7 @@ parser.add_argument('-b', '--groupB', type=str, default = 'time02',
                     
 
 pj='ThaTract'
-ct='rtp-pipeline_4.3.5d'
+ct='rtp-pipeline_4.3.9'
 
 def checkResults(ct, a, b, pj):
  
@@ -36,7 +36,7 @@ def checkResults(ct, a, b, pj):
     slabel = thalist.slabel
     if "time" in a and "time" in b:
         Ases = a[-2:]; Bses = b[-2:]
-        analysis = '01'
+        analysis = '14'
         for sub, tract in itertools.product(dt["sub"], slabel):
             T01 =  (f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/' +
                     f'ses-T{Ases}/output/{tract}_clean.tck')
@@ -45,23 +45,23 @@ def checkResults(ct, a, b, pj):
             ref =  (f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/' +
                     f'ses-T{Ases}/output/wmMask.nii.gz')
             json = (f'{baseDir}/{ct}/analysis-{analysis}/' + 
-                    f'pairwise_agreement/{tract}_{sub}_time.json')
+                    f'pairwise_agreement/{tract}_time_{sub}.json')
             if os.path.exists(T01) and os.path.exists(T02):
                 print(f"{sub} {tract}")
-                cmdstr = (f"scil_evaluate_bundles_pairwise_agreement_measures.py " +   
+                cmdstr = (f"python3 ~/GIT/scilpy/scripts/scil_evaluate_bundles_pairwise_agreement_measures.py " +   
                          f"--reference {ref} {T01} {T02} {json} -f ")
                 sp.call(cmdstr, shell=True)
             else:
                 continue
         os.chdir(f'{baseDir}/{ct}/analysis-{analysis}/pairwise_agreement')
         print("merging all jsons....")
-        cmdstr = (f" scil_merge_json.py --keep_separate -f *time.json {baseDir}/{ct}/analysis-{analysis}/all.json")
+        cmdstr = (f" python3 ~/GIT/scilpy/scripts/scil_merge_json.py --keep_separate -f *_time_*.json {baseDir}/{ct}/analysis-{analysis}/all.json")
         sp.call(cmdstr, shell=True)
         alljs = pd.read_json(f"{baseDir}/{ct}/analysis-{analysis}/all.json")
         alljs = alljs.T
         for col in alljs.columns:
-            alljs.loc[:, col] = alljs[col].map(lambda x: x[0])
-        alljs['tract'], alljs['SUBID'], _ = alljs.index.str.split('_', 2).str
+            alljs.loc[:, col] = alljs[col].map(lambda x: x if pd.isnull(x) else x[0])
+        alljs['tract'], alljs['SUBID'] = alljs.index.str.split('_time_', 1).str
         alljs.to_csv(f"{baseDir}/{ct}/analysis-{analysis}/pairwise_agreement.csv", index=False)
     elif "com" in a and "com" in b:
         Aana = a[-2:]; Bana = b[-2:]
@@ -76,10 +76,10 @@ def checkResults(ct, a, b, pj):
             ref =  (f'{baseDir}/{ct}/analysis-{Aana}/sub-{sub}/' +
                     f'ses-T01/output/wmMask.nii.gz')
             json = (f'{baseDir}/{ct}/pairwise_agreement/' + 
-                    f'{Aana}_{Bana}/{tract}_{sub}_{a}vs{b}.json')
+                    f'{Aana}_{Bana}/{tract}_sep_{sub}_sep_{a}vs{b}.json')
             if os.path.exists(T01) and os.path.exists(T02):
                 print(f"{sub} {tract}")
-                cmdstr = (f"scil_evaluate_bundles_pairwise_agreement_measures.py " +   
+                cmdstr = (f" python3 ~/GIT/scilpy/scripts/scil_evaluate_bundles_pairwise_agreement_measures.py " +   
                          f"--reference {ref} {T01} {T02} {json} -f --keep_tmp")
                 #print(cmdstr)
                 sp.call(cmdstr, shell=True)
@@ -87,14 +87,14 @@ def checkResults(ct, a, b, pj):
                 continue
         os.chdir(f'{baseDir}/{ct}/pairwise_agreement/{Aana}_{Bana}')
         print("merging all jsons....")
-        cmdstr = (f" scil_merge_json.py --keep_separate -f *{a}vs{b}.json " +
+        cmdstr = (f" python3 ~/GIT/scilpy/scripts/scil_merge_json.py --keep_separate -f *{a}vs{b}.json " +
               f"{baseDir}/{ct}/pairwise_agreement/{Aana}_{Bana}/all_{a}vs{b}.json")
         sp.call(cmdstr, shell=True)
         alljs = pd.read_json(f"{baseDir}/{ct}/pairwise_agreement/{Aana}_{Bana}/all_{a}vs{b}.json")
         alljs = alljs.T
         for col in alljs.columns:
             alljs.loc[:, col] = alljs[col].map(lambda x: x[0] if isinstance(x, list) else 'NaN')
-        alljs['tract'], alljs['SUBID'], alljs['btw'] = alljs.index.str.split('_', 2).str
+        alljs['tract'], alljs['SUBID'], alljs['btw'] = alljs.index.str.split('_sep_', 2).str
         alljs.to_csv(f"{baseDir}/{ct}/pairwise_agreement/pairwise_agreement_{a}vs{b}.csv", index=False)
 
 

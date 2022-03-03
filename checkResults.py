@@ -18,7 +18,7 @@ def checkResults(ct,analysis, pj):
     elif 'preproc' in ct:
         target = 'dwi.nii.gz'
     elif 'pipeline' in ct:
-        target = 'Reproduce.mat'
+        target = 'AL46_clean.tck'
     else:
         raise Exception("Hey, which container's results you want to check?")
 
@@ -47,12 +47,15 @@ def checkResults(ct,analysis, pj):
                 #print(f'at least {target} is there for {sub}\n' + 
                 #      f'running {ct} of analysis-{analysis}, ses-{ses}')
                 #print("###########################################")
-                print("OOOOK!!")
+                # print("OOOOK!!")
+                dt.loc[ ((dt["sub"]==sub) & (dt["ses"]==ses )), "RUN"] = False
                 continue
             else:
+                dt.loc[ ((dt["sub"]==sub) & (dt["ses"]==ses )), "RUN"] = True
                 print(f"{sub} didn't finish well for \n" +
                       f"{ct} of analysis-{analysis}, ses-{ses} \n" + 
                       f"#######################################")
+    dt.to_csv("new_subSesList.txt", index=False)
 if __name__ == "__main__":
     args = parser.parse_args()
     checkResults(args.ct, args.analysis, args.pj)
