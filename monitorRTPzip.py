@@ -3,6 +3,7 @@ import argparse
 import pandas as pd
 from datetime import datetime
 
+un = os.environ.get("USER")
 parser = argparse.ArgumentParser(description='check if the run secceeded')
 parser.add_argument('-c', '--ct', type=str, 
                     help='which container you want to check, \
@@ -15,8 +16,8 @@ parser.add_argument('-p', '--pj', type=str, default =  'ThaTract',
                     help='ThaTract or MAGNO')
 
 def checkResults(ct,analysis, pj):
-    baseDir = '/scratch/lmx/ThaTract/Nifti/derivatives'
-    codeDir = '/dipc/lmx/GIT/ThaTract'
+    baseDir = f'/scratch/{un}/ThaTract/Nifti/derivatives'
+    codeDir = f'/dipc/{un}/GIT/ThaTract'
     target = "RTP_PIPELINE_ALL_OUTPUT.zip" 
     subseslist=os.path.join(codeDir,"subSesList.txt")
     while True:

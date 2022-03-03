@@ -1,6 +1,9 @@
 import os, glob, shutil
 import argparse
 import pandas as pd
+
+un = os.environ.get("USER")
+
 parser = argparse.ArgumentParser(description='check if the run secceeded')
 parser.add_argument('-c', '--ct', type=str, 
                     help='which container you want to check, \
@@ -23,11 +26,11 @@ def checkResults(ct,analysis, pj):
         raise Exception("Hey, which container's results you want to check?")
 
     if pj == 'MAGNO':
-        baseDir = '/scratch/lmx/MAGNO/Nifti/derivatives'
-        codeDir = '/dipc/lmx/GIT/paper-MAGNO'
+        baseDir = f'/scratch/{un}/MAGNO/Nifti/derivatives'
+        codeDir = f'/dipc/{un}/GIT/paper-MAGNO'
     elif pj == 'ThaTract':
-        baseDir = '/scratch/lmx/ThaTract/Nifti/derivatives'
-        codeDir = '/dipc/lmx/GIT/ThaTract'
+        baseDir = f'/scratch/{un}/ThaTract/Nifti/derivatives'
+        codeDir = f'/dipc/{un}/GIT/ThaTract'
  
     subseslist=os.path.join(codeDir,"subSesList.txt")
     # READ SUBJECTID FILE

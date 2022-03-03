@@ -13,8 +13,9 @@
     
 # we need following lines for running fixAllSegmentations.m
 # (from thalamus segmentation) successfully in DIPC
-ls /lscratch/
+ls /lscratch/lmx/*
 ls /lscratch/$USER/
 rm -rf /lscratch/$USER/*    
 echo "after removing, ls"
 ls /lscratch/$USER/
+
