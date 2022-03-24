@@ -18,7 +18,7 @@ def concateProfile(ct,analysis, target):
  
     appended_data = []
 
-    baseDir = '/scratch/lmx/ThaTract/Nifti/derivatives'
+    baseDir = '/dipc/lmx/ThaTract/Nifti/derivatives'
     codeDir = '/dipc/lmx/GIT/ThaTract'
  
     subseslist=os.path.join(codeDir,"subSesList.txt")
@@ -34,8 +34,12 @@ def concateProfile(ct,analysis, target):
             targetFull = (f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/' + 
                           f'ses-{ses}/output/RTP_{target}.csv')
             if os.path.exists(targetFull):
-                df = wide2long.wide2long(targetFull, sub, ses)
-                appended_data.append(df)
+                try:
+                    df = wide2long.wide2long(targetFull, sub, ses)
+                    appended_data.append(df)
+                except:
+                    print(sub,ses, targetFull, "something wrong")
+                    continue
             else:
                 continue
     appended_data = pd.concat(appended_data)
@@ -43,7 +47,7 @@ def concateProfile(ct,analysis, target):
     return appended_data
 
 def mergeProfile(ct,analysis):
-    baseDir = '/scratch/lmx/ThaTract/Nifti/derivatives'
+    baseDir = '/dipc/lmx/ThaTract/Nifti/derivatives'
     codeDir = '/dipc/lmx/GIT/ThaTract'
 
     targets = ["ad", "cl", "md", "volume", "curvature", "rd", "fa", "torsion"]

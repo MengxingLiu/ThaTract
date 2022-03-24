@@ -21,7 +21,7 @@ def checkResults(ct,analysis, pj):
     elif 'preproc' in ct:
         target = 'dwi.nii.gz'
     elif 'pipeline' in ct:
-        target = 'AL46_clean.tck'
+        target = 'AL51_clean.tck'
     else:
         raise Exception("Hey, which container's results you want to check?")
 
