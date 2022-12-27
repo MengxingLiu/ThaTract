@@ -10,16 +10,16 @@ parser.add_argument('-c', '--ct', type=str,
 parser.add_argument('-a', '--analysis', type=str, default = '01', 
                     help='which analysis instance you want to check, \
                     possible values: 01-10')
+parser.add_argument('-p', '--project', type=str, default = 'ThaTract')
 
 
 
-
-def concateProfile(ct,analysis, target):
+def concateProfile(ct,analysis, target, project):
  
     appended_data = []
 
-    baseDir = '/dipc/lmx/ThaTract/Nifti/derivatives'
-    codeDir = '/dipc/lmx/GIT/ThaTract'
+    baseDir = f'/dipc/lmx/{project}/Nifti/derivatives'
+    codeDir = f'/dipc/lmx/GIT/{project}'
  
     subseslist=os.path.join(codeDir,"subSesList.txt")
     # READ SUBJECTID FILE
@@ -46,14 +46,14 @@ def concateProfile(ct,analysis, target):
     #appended_data.to_csv(f'{baseDir}/{ct}/analysis-{analysis}/RTP_{target}_all.csv',index=False)
     return appended_data
 
-def mergeProfile(ct,analysis):
-    baseDir = '/dipc/lmx/ThaTract/Nifti/derivatives'
-    codeDir = '/dipc/lmx/GIT/ThaTract'
+def mergeProfile(ct,analysis, project):
+    baseDir = f'/dipc/lmx/{project}/Nifti/derivatives'
+    codeDir = f'/dipc/lmx/GIT/{project}'
 
     targets = ["ad", "cl", "md", "volume", "curvature", "rd", "fa", "torsion"]
     for target in targets:
         print(target)
-        tmp = concateProfile(ct,analysis, target)
+        tmp = concateProfile(ct,analysis, target, project)
         tmp = tmp.rename(columns = {"value":target})
         if targets.index(target) == 0:
             Allprofile =  tmp
@@ -65,7 +65,7 @@ def mergeProfile(ct,analysis):
             "C2ROIcl",  "C2ROImd", "C2ROIvolume",]
     for target in targets:
         print(target)
-        tmp = concateProfile(ct,analysis, target)
+        tmp = concateProfile(ct,analysis, target, project)
         tmp = tmp.rename(columns = {"value":target})
         print(tmp.TCK.unique())
         if targets.index(target) == 0:
@@ -77,6 +77,6 @@ def mergeProfile(ct,analysis):
  
 if __name__ == "__main__":
     args = parser.parse_args()
-    mergeProfile(args.ct, args.analysis)
+    mergeProfile(args.ct, args.analysis, args.project)
 
 

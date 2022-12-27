@@ -16,21 +16,17 @@ parser.add_argument('-p', '--pj', type=str, default =  'ThaTract',
                     help='ThaTract or MAGNO')
 
 def checkResults(ct,analysis, pj):
-    if 'fs' in ct:
+    if 'anat' in ct:
         target = 'fs.zip'
     elif 'preproc' in ct:
         target = 'dwi.nii.gz'
     elif 'pipeline' in ct:
-        target = 'AL51_clean.tck'
+        target = 'RILF_clean.tck'
     else:
         raise Exception("Hey, which container's results you want to check?")
 
-    if pj == 'MAGNO':
-        baseDir = f'/scratch/{un}/MAGNO/Nifti/derivatives'
-        codeDir = f'/dipc/{un}/GIT/paper-MAGNO'
-    elif pj == 'ThaTract':
-        baseDir = f'/scratch/{un}/ThaTract/Nifti/derivatives'
-        codeDir = f'/dipc/{un}/GIT/ThaTract'
+    baseDir = f'/scratch/{un}/{pj}/Nifti/derivatives'
+    codeDir = f'/dipc/{un}/GIT/ThaTract'
  
     subseslist=os.path.join(codeDir,"subSesList.txt")
     # READ SUBJECTID FILE
@@ -41,7 +37,7 @@ def checkResults(ct,analysis, pj):
         RUN  = row.RUN
         dwi  = row.dwi
         func = row.func
-        if dwi:
+        if RUN:
             targetFull = (f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/' + 
                           f'ses-{ses}/output/{target}')
             #print(targetFull)
