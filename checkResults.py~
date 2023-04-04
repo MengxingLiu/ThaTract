@@ -29,17 +29,17 @@ def checkResults(ct,analysis, pj):
  
     subseslist=os.path.join( f'/scratch/{un}/{pj}/Nifti/',"subSesList.txt")
     # READ SUBJECTID FILE
-    dt = pd.read_csv(subseslist, sep=",", header=0, dtype={"sub":str})
+    dt = pd.read_csv(subseslist, sep=",", header=0)
     for row in dt.itertuples(index=True, name='Pandas'):
         sub  = row.sub
         ses  = row.ses
         RUN  = row.RUN
         dwi  = row.dwi
         func = row.func
-        if RUN:
+        if dwi:
             targetFull = (f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/' + 
                           f'ses-{ses}/output/{target}')
-            #print(targetFull)
+            print(targetFull)
             if os.path.exists(targetFull):
                 #print(f'it seems like the results are there')
                 #print(f'at least {target} is there for {sub}\n' + 
