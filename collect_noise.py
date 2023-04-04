@@ -9,30 +9,31 @@ from subprocess import PIPE
 import uuid
                    
 pj='ThaTract'
-pipeline_ct='rtp-pipeline_4.4.1'
+pipeline_ct='rtp-pipeline_4.3.5d'
 preproc_ct = 'rtppreproc_1.1.3'
 anat_ct = 'anatrois_4.2.7-7.1.1'
 baseDir = '/dipc/lmx/ThaTract/Nifti/derivatives'
 codeDir = '/dipc/lmx/GIT/ThaTract'
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-s', '--sub', type=str)
-
-subseslist=os.path.join(codeDir,"tmp.txt")
-tractlist = os.path.join("/dipc/lmx", "tractparams_AL_bh.csv")
+subseslist=os.path.join(codeDir,"subSesList.txt")
 # READ SUBJECTID FILE
 dt = pd.read_csv(subseslist, sep=",", header=0)
+ 
+#subseslist=os.path.join(codeDir,"tmp.txt")
+tractlist = os.path.join(codeDir, "tractparams_Classic.csv")
+only_tract=True
+# READ SUBJECTID FILE
+# dt = pd.read_csv(subseslist, sep=",", header=0)
 # READ THALAMIC TRACT NAME
-thalist = pd.read_csv(tractlist, sep=",", header=0)
-thalist = thalist.itertuples(index=True, name='Pandas')
-SES = ["T01", "T02"]
-
-
 def collect_noise(sub):
+    thalist = pd.read_csv(tractlist, sep=",", header=0)
+    thalist = thalist.itertuples(index=True, name='Pandas')
+    SES = ["T01", "T02"]
 
+    print(sub, "excuting")
     noise_data = pd.DataFrame()
     for ses, tract_row in itertools.product(SES, thalist):
-        pipeline_output = (f'{baseDir}/{pipeline_ct}/analysis-AL_07/sub-{sub}/' +
+        pipeline_output = (f'{baseDir}/{pipeline_ct}/analysis-01/sub-{sub}/' +
                 f'ses-{ses}/output')
         preproc_output =  (f'{baseDir}/{preproc_ct}/analysis-01/sub-{sub}/' +
                 f'ses-{ses}/output')
@@ -44,12 +45,14 @@ def collect_noise(sub):
             sp.run(cmdstr, shell=True)    
             os.chdir(codeDir)
         fs_dir = f"{pipeline_output}/flywheel/v0/output/RTP/fs/ROIs"
-        ROI_01  =  f"{fs_dir}/{tract_row.roi1}_dil-1.nii.gz"
-        ROI_02  =  f"{fs_dir}/{tract_row.roi2}_dil-1.nii.gz"
+        # ROI_01  =  f"{fs_dir}/{tract_row.roi1}_dil-1.nii.gz"
+        ROI_01  =  f"{fs_dir}/{tract_row.roi1}.nii.gz"
+        ROI_02  =  f"{fs_dir}/{tract_row.roi2}.nii.gz"
+        # ROI_02  =  f"{fs_dir}/{tract_row.roi2}_dil-1.nii.gz"
         tract =  f"{pipeline_output}/{tract_row.slabel}_clean_fa_bin.nii.gz"
         noise = f"{preproc_output}/noise.mif"
 
-        if not os.path.exists(tract): continue
+        if not os.path.exists(tract): print("not exist", tract); continue
         # first concatenate ROIs and tract nifti
         tmp_mask = f"{str(uuid.uuid4())}.mif" # generate a random file name for temp use
         tmp_ROI1 = f"{str(uuid.uuid4())}.mif" # random name for tract after regrid
@@ -66,8 +69,11 @@ def collect_noise(sub):
                    f" {tract} -add 0 -gt {codeDir}/{tmp_mask} -force ")
         print(cmdstr)
         sp.run(cmdstr, shell=True)
-        # extract noise values   
-        cmdstr = f"mrstats -quiet -output mean -mask {codeDir}/{tmp_mask} {codeDir}/{tmp_noise} "
+        # extract noise values
+        if only_tract:
+            cmdstr = f"mrstats -quiet -output mean -mask {tract} {codeDir}/{tmp_noise} "
+        else:        
+            cmdstr = f"mrstats -quiet -output mean -mask {codeDir}/{tmp_mask} {codeDir}/{tmp_noise} "
         print(cmdstr)
         a = sp.run(cmdstr, shell=True, stdout = PIPE)
         # remove tmp files
@@ -78,5 +84,5 @@ def collect_noise(sub):
         
     noise_data.to_csv(f"{codeDir}/tmp/{sub}_noise_data.csv", index=False)
 if __name__ == "__main__":
-    args = parser.parse_args()
-    collect_noise(args.sub)
+    for sub in dt["sub"].unique():
+        collect_noise(sub)

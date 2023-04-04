@@ -18,13 +18,9 @@ parser.add_argument('-p', '--pj', type=str, default =  'ThaTract',
                     help='ThaTract or MAGNO')
 
 def tckstats(ct,analysis, pj):
-    if pj == 'MAGNO':
-        baseDir = f'/scratch/{un}/MAGNO/Nifti/derivatives'
-        codeDir = f'/dipc/{un}/GIT/paper-MAGNO'
-    elif pj == 'ThaTract':
-        baseDir = f'/dipc/{un}/ThaTract/Nifti/derivatives'
-        codeDir = f'/dipc/{un}/GIT/ThaTract'
-    tractlist = os.path.join("/dipc/lmx", "tractparams_AL_bh.csv") 
+    baseDir = f'/dipc/{un}/{pj}/Nifti/derivatives'
+    codeDir = f'/dipc/{un}/GIT/{pj}'
+    tractlist = os.path.join(baseDir,ct,f"analysis-{analysis}", "tractparams.csv") 
     subseslist=os.path.join(codeDir,"subSesList.txt")
     tckstats = pd.DataFrame()
     # READ SUBJECTID FILE

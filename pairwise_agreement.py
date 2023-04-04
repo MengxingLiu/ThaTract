@@ -18,26 +18,26 @@ parser.add_argument('-n', '--analysis', type=str, default = 'AL_07')
                     
 
 pj='ThaTract'
-ct='rtp-pipeline_4.4.1'
+ct='rtp-pipeline_4.3.5d'
 def checkResults(ct, a, b, n, pj):
  
     appended_data = []
 
-    baseDir = '/dipc/lmx/ThaTract/Nifti/derivatives'
-    codeDir = '/dipc/lmx/GIT/ThaTract'
+    baseDir = '/scratch/lmx/ThaTract/Nifti/derivatives'
+    codeDir = '/scratch/lmx/GIT/ThaTract'
  
     subseslist=os.path.join(codeDir,"subSesList.txt")
-    tractlist = os.path.join("/dipc/lmx", "tractparams_AL_bh.csv")
     # READ SUBJECTID FILE
     dt = pd.read_csv(subseslist, sep=",", header=0)
-    # READ THALAMIC TRACT NAME
-    thalist = pd.read_csv(tractlist, sep=",", header=0)
-    slabel = thalist.slabel
     if "time" in a and "time" in b:
         Ases = a[-2:]; Bses = b[-2:]
         analysis = n
         if not os.path.exists(f'{baseDir}/{ct}/analysis-{analysis}/pairwise_agreement'):
             os.makedirs(f'{baseDir}/{ct}/analysis-{analysis}/pairwise_agreement')
+        tractlist = os.path.join(f'{baseDir}/{ct}/analysis-{analysis}', "tractparams.csv")
+        # READ THALAMIC TRACT NAME
+        thalist = pd.read_csv(tractlist, sep=",", header=0)
+        slabel = thalist.slabel
         for sub, tract in itertools.product(dt["sub"].unique(), slabel):
             T01 =  (f'{baseDir}/{ct}/analysis-{analysis}/sub-{sub}/' +
                     f'ses-T{Ases}/output/{tract}_clean.tck')
@@ -51,7 +51,7 @@ def checkResults(ct, a, b, n, pj):
             if os.path.exists(T01) and os.path.exists(T02):
                 print(f"{sub} {tract}")
                 start_time = time.time()
-                cmdstr = (f"python3 ~/GIT/scilpy/scripts/scil_evaluate_bundles_pairwise_agreement_measures.py " +   
+                cmdstr = (f"python3 /scratch/lmx/GIT/scilpy/scripts/scil_evaluate_bundles_pairwise_agreement_measures.py " +   
                          f"--reference {ref} {T01} {T02} {json} -f ")
                 sp.call(cmdstr, shell=True)
                 print(time.time()-start_time)
@@ -59,7 +59,7 @@ def checkResults(ct, a, b, n, pj):
                 continue
         os.chdir(f'{baseDir}/{ct}/analysis-{analysis}/pairwise_agreement')
         print("merging all jsons....")
-        cmdstr = (f" python3 ~/GIT/scilpy/scripts/scil_merge_json.py --keep_separate -f *_time_*.json {baseDir}/{ct}/analysis-{analysis}/all.json")
+        cmdstr = (f" python3 /scratch/lmx/GIT/scilpy/scripts/scil_merge_json.py --keep_separate -f *_time_*.json {baseDir}/{ct}/analysis-{analysis}/all.json")
         sp.call(cmdstr, shell=True)
         alljs = pd.read_json(f"{baseDir}/{ct}/analysis-{analysis}/all.json")
         alljs = alljs.T
@@ -72,6 +72,7 @@ def checkResults(ct, a, b, n, pj):
         json_dir = f'{baseDir}/{ct}/pairwise_agreement/{Aana}_{Bana}'
         if not os.path.exists(json_dir):
             os.mkdir(json_dir)
+        # sleep after submitting 100
         for sub, tract in itertools.product(dt["sub"].unique(), slabel):
             T01 =  (f'{baseDir}/{ct}/analysis-{Aana}/sub-{sub}/' +
                     f'ses-T01/output/{tract}_clean.tck')
@@ -81,19 +82,20 @@ def checkResults(ct, a, b, n, pj):
                     f'ses-T01/output/wmMask.nii.gz')
             json = (f'{baseDir}/{ct}/pairwise_agreement/' + 
                     f'{Aana}_{Bana}/{tract}_sep_{sub}_sep_{a}vs{b}.json')
+            if os.path.exists(json) and (os.path.getsize(json)>=2): continue
             if os.path.exists(T01) and os.path.exists(T02):
                 start_time = time.time()
                 print(f"{sub} {tract}")
-                cmdstr = (f" python3 ~/GIT/scilpy/scripts/scil_evaluate_bundles_pairwise_agreement_measures.py " +   
-                         f"--reference {ref} {T01} {T02} {json} -f --keep_tmp")
-                #print(cmdstr)
-                sp.call(cmdstr, shell=True)
+                cmdstr = (f" python3 /scratch/lmx/GIT/scilpy/scripts/scil_evaluate_bundles_pairwise_agreement_measures.py " + 
+                             f"--reference {ref} {T01} {T02} {json} -f  ")
+                #print(cmdstr)  
+                #sp.call(cmdstr, shell=True)
                 print(time.time()-start_time)
             else:
                 continue
         os.chdir(f'{baseDir}/{ct}/pairwise_agreement/{Aana}_{Bana}')
         print("merging all jsons....")
-        cmdstr = (f" python3 ~/GIT/scilpy/scripts/scil_merge_json.py --keep_separate -f *{a}vs{b}.json " +
+        cmdstr = (f" python3 /scratch/lmx/GIT/scilpy/scripts/scil_merge_json.py --keep_separate -f *sep**{a}vs{b}.json " +
               f"{baseDir}/{ct}/pairwise_agreement/{Aana}_{Bana}/all_{a}vs{b}.json")
         sp.call(cmdstr, shell=True)
         alljs = pd.read_json(f"{baseDir}/{ct}/pairwise_agreement/{Aana}_{Bana}/all_{a}vs{b}.json")

@@ -21,9 +21,10 @@ def checkResults(ct,analysis, pj):
     elif 'preproc' in ct:
         target = 'dwi.nii.gz'
     elif 'pipeline' in ct:
-        target = 'AL51_clean.tck'
+        target = 'RILF_clean.tck'
     else:
         raise Exception("Hey, which container's results you want to check?")
+
     baseDir = f'/scratch/{un}/{pj}/Nifti/derivatives'
     codeDir = f'/dipc/{un}/GIT/ThaTract'
  

@@ -7,7 +7,7 @@ for i in a:
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
     os.chdir(tmp_dir)
-    cmdstr = (f"python3 /dipc/lmx/GIT/ThaTract/pairwise_agreement.py -a comAL_{i[0]} -b comAL_{i[1]} & ")
+    cmdstr = (f"python3 /dipc/lmx/GIT/ThaTract/pairwise_agreement.py -a com{i[0]} -b com{i[1]}  ")
 
     print(cmdstr)
     sp.call(cmdstr, shell=True)
